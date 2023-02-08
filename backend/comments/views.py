@@ -10,7 +10,7 @@ from .models import Comments
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
-def comments(request):
+def video_comments(request):
     comments = Comments.objects.all()
     serializer = CommentSerializer(comments, many=True)
     return Response(serializer.data)
@@ -18,7 +18,7 @@ def comments(request):
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])  # this makes sure the user is registered and logged in
-def comments_detail(request):
+def user_comments(request, video_id):
     print(
         'User ', f"{request.user.id} {request.user.email} {request.user.username}")
     if request.method == 'POST':
@@ -28,6 +28,7 @@ def comments_detail(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'GET':
+        video_id = Comments.objects.filter(video_id=video_id)
         comments = Comments.objects.filter(user_id=request.user.id)
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
