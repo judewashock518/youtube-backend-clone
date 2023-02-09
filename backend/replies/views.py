@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -16,7 +17,7 @@ def video_replies(request):
     return Response(serializer.data)
 
 
-@api_view(['GET', 'POST'])
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])  # this makes sure the user is registered and logged in
 def user_replies(request, comment_id):
     print(
@@ -27,12 +28,24 @@ def user_replies(request, comment_id):
             serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    elif request.method == 'GET':
-        replies = Reply.objects.filter(comment=comment_id)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_replies(request, pk):
+    comment = get_object_or_404(Reply, pk=pk)
+    serializer = ReplySerializer(comment, data=request.data)
+    if request.method == 'GET':
+        replies = Reply.objects.filter(comment_id=pk)
         serializer = ReplySerializer(replies, many=True)
         return Response(serializer.data)
-    elif request.method == 'PUT':
-        serializer = ReplySerializer(replies, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
 
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated]) 
+def update_comment(request, pk):
+    comment = get_object_or_404(Reply, pk=pk)
+    serializer = ReplySerializer(comment, data=request.data)
+    if serializer.is_valid():
+        serializer.save(user=request.user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

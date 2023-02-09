@@ -5,5 +5,5 @@ from replies import views
 
 urlpatterns = [
     path('', views.video_replies),
-    path('<str:video_id>/', views.user_replies),
+    path('by_comment_id/<int:pk>/', views.user_replies),
 ]
