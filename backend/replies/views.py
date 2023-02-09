@@ -18,7 +18,7 @@ def video_replies(request):
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])  # this makes sure the user is registered and logged in
-def user_replies(request, video_id):
+def user_replies(request, comment_id):
     print(
         'User ', f"{request.user.id} {request.user.email} {request.user.username}")
     if request.method == 'POST':
@@ -28,9 +28,11 @@ def user_replies(request, video_id):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'GET':
-        video_id = Reply.objects.filter(video_id=video_id)
-        comments = Reply.objects.filter(user_id=request.user.id)
-        serializer = ReplySerializer(comments, many=True)
+        replies = Reply.objects.filter(comment=comment_id)
+        serializer = ReplySerializer(replies, many=True)
         return Response(serializer.data)
+    elif request.method == 'PUT':
+        serializer = ReplySerializer(replies, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
 
-# Create your views here.

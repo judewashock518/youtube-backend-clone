@@ -5,5 +5,6 @@ from comments import views
 
 urlpatterns = [
     path('', views.video_comments),
-    path('<str:video_id>/', views.user_comments),
+    path('by_video_id/<str:video_id>/', views.user_comments),
+    path('by_comment_id/<int:pk>/', views.update_comment),
 ]
