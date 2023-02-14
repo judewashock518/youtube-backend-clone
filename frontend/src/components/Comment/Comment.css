@@ -1,0 +1,21 @@
+.comment_border_box {
+    float:center;
+    border: 1px;
+    border-style: solid;
+    border-color: black;
+    margin: 1rem;
+    padding: 1rem;
+}
+
+.flex_box {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.name_space {
+    margin-top: 0rem;
+}
+
+.comment_space {
+    margin-top: 2rem;
+}
