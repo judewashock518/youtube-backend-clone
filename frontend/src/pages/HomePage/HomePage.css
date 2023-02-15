@@ -3,3 +3,13 @@
     flex-direction: column;
     
 }
+
+.videoplayer {
+    margin-left: 1rem;
+}
+
+.seecomments-button {
+    margin-left: 1rem;
+    height:70px;
+    width:200px;
+}
