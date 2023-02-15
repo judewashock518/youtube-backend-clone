@@ -8,10 +8,10 @@ const Comment = (props) => {
 
   return (
         <div className="comment_border_box">
-            <h2>
-            <p className="name_space"><strong>{props.entry.name}</strong></p>
+            <h2 className="name_space">
+            <strong>{props.entry.user.username}</strong>
             </h2>
-            <p className="comment_space">{props.entry.comment}</p>
+            <p className="comment_space">{props.entry.text}</p>
             <div className='flex_box'>
                 <button
                     onClick={() => {

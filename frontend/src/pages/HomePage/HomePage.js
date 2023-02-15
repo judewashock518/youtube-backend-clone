@@ -66,6 +66,14 @@ const HomePage = () => {
 
   return (
     <div>
+      <form onSubmit={filterVideoData} className='form-grid'>
+            <div className='form-group'>
+             <input type='text'
+             placeholder='search videos...'
+             className='form-control' value={query} onChange={(event) => setQuery(event.target.value)} />
+            </div>
+            <button type='submit' class='btn btn-primary' style={{'margin-top': '1rem', 'margin-left': '1rem', 'margin-bottom': '1rem'}}>Search</button>
+      </form>
       <div className="videoplayer">
         <iframe
           id="ytplayer"
@@ -78,16 +86,9 @@ const HomePage = () => {
       </div>
       <CommentForm addNewEntry={addNewEntry} videoid={videoid} />
       <button type='submit' className='seecomments-button' onClick={() => getEntries()}>See Comments</button>
+      <CommentList parentEntries={comments}/>
     </div>
     // <div className="form-grid">
-    //   <form onSubmit={filterVideoData} className='form-grid'>
-    //         <div className='form-group'>
-    //          <input type='text'
-    //          placeholder='search videos...'
-    //          className='form-control' value={query} onChange={(event) => setQuery(event.target.value)} />
-    //         </div>
-    //         <button type='submit' class='btn btn-primary' style={{'margin-top': '1rem'}}>Search</button>
-    //   </form>
     //   {videoData.map((video) => {
     //   return (
 
@@ -105,10 +106,10 @@ const HomePage = () => {
 
 export default HomePage;
 
-{
-  /* <CommentForm addNewEntryProperty={addNewEntry}/>
-      <CommentList parentEntries={entries} /> */
-}
+// {
+
+//       <CommentList parentEntries={entries} /> */
+// }
 
 // const HomePage = () => {
 //   // The "user" value from this Hook contains the decoded logged in user information (username, first name, id)

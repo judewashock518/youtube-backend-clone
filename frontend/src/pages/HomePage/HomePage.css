@@ -13,3 +13,8 @@
     height:70px;
     width:200px;
 }
+
+.form-control{
+    margin-left:1rem;
+    width:50%;
+}
