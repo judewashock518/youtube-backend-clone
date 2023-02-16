@@ -16,6 +16,7 @@ const HomePage = () => {
   const [videoData, setVideoData] = useState([]);
   const [query, setQuery] = useState("Bob Ross");
   const [videoid, setVideoId] = useState("d05tQrhNMkA");
+  const [relatedvideos, setRelatedVideos] = useState([]);
   const [comments, setComments] = useState([]);
   console.log(query);
 
@@ -52,6 +53,11 @@ const HomePage = () => {
     getVideoData(query);
   }
 
+  const relatedVideos = async () => {
+    await axios.get(`https://www.googleapis.com/youtube/v3/search?relatedToVideoId=${videoid}&type=video&key=${KEY}&part=snippet`)
+    .then(response => setRelatedVideos(response.data.items))
+  }
+
   useEffect(() => {
     getVideoData()
   }, []);
@@ -78,6 +84,7 @@ const HomePage = () => {
             </div>
             <button type='submit' class='btn btn-primary' style={{'margin-top': '1rem', 'margin-left': '1rem', 'margin-bottom': '1rem'}}>Search</button>
       </form>
+      <button onClick={() => relatedVideos()}>related videos</button>
       <div className="videoplayer">
         <iframe
           id="ytplayer"
@@ -95,9 +102,23 @@ const HomePage = () => {
       {videoData.map((video) => {
       return (
 
-        <div>
+        <div className='search-results'>
           <p>{video.snippet.title}</p>
         <img src={video.snippet.thumbnails.medium.url} alt="videos"></img>
+        <p>{video.snippet.description}</p>
+        </div>
+
+      );
+      })}
+    </div>
+
+    <div className="form-grid">
+      {relatedvideos.map((video) => {
+      return (
+
+        <div className='search-results'>
+          <p>{video.snippet.title}</p>
+        <img src={video.snippet.thumbnails.medium.url} alt="videos" onClick={()=>setVideoId(video.id.videoId)}></img>
         <p>{video.snippet.description}</p>
         </div>
 
@@ -109,6 +130,17 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+
+
+
+
+
+
+
+
+
+
 
 // const HomePage = () => {
 //   // The "user" value from this Hook contains the decoded logged in user information (username, first name, id)
