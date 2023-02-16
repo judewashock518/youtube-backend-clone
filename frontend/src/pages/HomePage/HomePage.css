@@ -1,4 +1,4 @@
-.form-grid {
+.container-fluid {
     display: flex;
     flex-direction: column;
     
@@ -21,4 +21,16 @@
 
 .search-results {
     margin-left: 1rem;
+}
+
+.border-box {
+    border: 1px;
+    border-radius:2rem;
+    border-style: solid;
+    border-width: thick;
+    color:antiquewhite;
+    border-color:#5c6061;
+    background-color:#0c0e0d;
+    margin: 1rem;
+    padding:1rem;
 }

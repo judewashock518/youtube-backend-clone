@@ -2,10 +2,13 @@ import React from "react";
 import { useEffect, useState } from "react";
 import CommentForm from "../../components/CommentForm/CommentForm";
 import CommentList from "../../components/CommentList/CommentList";
+import VideoPlayer from "../../components/VideoPlayer/VideoPlayer";
+import SearchBar from "../../components/SearchBar/SearchBar";
+import RelatedVideos from "../../components/RelatedVideos/RelatedVideos";
+import SearchPage from "../../components/SearchPage/SearchPage";
 import useAuth from "../../hooks/useAuth";
 import "./HomePage.css";
 import KEY from "../../components/key";
-
 import axios from "axios";
 
 const HomePage = () => {
@@ -75,70 +78,35 @@ const HomePage = () => {
   }
 
   return (
-    <div>
-      <form onSubmit={submitSearchTerm} className='form-grid'>
-            <div className='form-group'>
-             <input type='text'
-             placeholder='search videos...'
-             className='form-control' value={query} onChange={(event) => setQuery(event.target.value)} />
-            </div>
-            <button type='submit' class='btn btn-primary' style={{'margin-top': '1rem', 'margin-left': '1rem', 'margin-bottom': '1rem'}}>Search</button>
-      </form>
-      <button onClick={() => relatedVideos()}>related videos</button>
-      <div className="videoplayer">
-        <iframe
-          id="ytplayer"
-          type="text/html"
-          width="640"
-          height="360"
-          src={`https://www.youtube.com/embed/${videoid}/`}
-          frameborder="0"
-        ></iframe>
+    <div className = 'container-fluid'>
+      <div className = 'row'>
+      <div className='column'>
+      <div className='border-box'>
+      <div className='border-box'><h2>Search Bar:</h2>
+      <SearchBar query= {query} setQuery= {setQuery} submitSearchTerm = {submitSearchTerm}/>
       </div>
+      <VideoPlayer videoid = {videoid}/>
       <CommentForm addNewEntry={addNewEntry} videoid={videoid} />
-      <button type='submit' className='seecomments-button' onClick={() => getEntries()}>See Comments</button>
+      <button type='submit' className='seecomments-button' onClick={() => getEntries()}>see comments</button>
+      <button onClick={() => relatedVideos()} style={{'margin-left': '1rem'}}>related videos</button>
       <CommentList parentEntries={comments}/>
-      <div className="form-grid">
-      {videoData.map((video) => {
-      return (
-
-        <div className='search-results'>
-          <p>{video.snippet.title}</p>
-        <img src={video.snippet.thumbnails.medium.url} alt="videos"></img>
-        <p>{video.snippet.description}</p>
-        </div>
-
-      );
-      })}
-    </div>
-
-    <div className="form-grid">
-      {relatedvideos.map((video) => {
-      return (
-
-        <div className='search-results'>
-          <p>{video.snippet.title}</p>
-        <img src={video.snippet.thumbnails.medium.url} alt="videos" onClick={()=>setVideoId(video.id.videoId)}></img>
-        <p>{video.snippet.description}</p>
-        </div>
-
-      );
-      })}
-    </div>
+      <div className='border-box'><h2>search results:</h2>
+      <SearchPage videoData={videoData} setVideoId={setVideoId}/>
+      </div>
+      </div>
+      </div>
+      <div className='column'>
+      <div className='border-box'>
+      <h2>Related Videos:</h2>
+      <RelatedVideos relatedvideos={relatedvideos} setVideoId={setVideoId} />
+      </div>
+      </div>
+      </div>
     </div>
   );
 };
 
 export default HomePage;
-
-
-
-
-
-
-
-
-
 
 
 
