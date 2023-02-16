@@ -14,7 +14,7 @@ const HomePage = () => {
   //TODO: Add an AddCars Page to add a car for a logged in user's garage
   const [user, token] = useAuth();
   const [videoData, setVideoData] = useState([]);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState("Bob Ross");
   const [videoid, setVideoId] = useState("d05tQrhNMkA");
   const [comments, setComments] = useState([]);
   console.log(query);
@@ -35,7 +35,7 @@ const HomePage = () => {
     }).then (r => getEntries())
   };
 
-  function filterVideoData(event) {
+  function getVideoData(event) {
     event.preventDefault();
     let response = videoData.filter((video) => {
       if (
@@ -53,10 +53,14 @@ const HomePage = () => {
   }
 
   useEffect(() => {
-    // getVideoData()
+    getVideoData()
   }, []);
 
-  async function getVideoData(query = "Bob Ross") {
+  function submitSearchTerm(e){
+    e.preventDefault()
+    getVideoData()
+  }
+  async function getVideoData() {
     let response = await axios.get(
       `https://www.googleapis.com/youtube/v3/search?q=${query}&key=${KEY}&type=video&maxResults=5&part=snippet`
     );
@@ -66,7 +70,7 @@ const HomePage = () => {
 
   return (
     <div>
-      <form onSubmit={filterVideoData} className='form-grid'>
+      <form onSubmit={submitSearchTerm} className='form-grid'>
             <div className='form-group'>
              <input type='text'
              placeholder='search videos...'
@@ -87,29 +91,24 @@ const HomePage = () => {
       <CommentForm addNewEntry={addNewEntry} videoid={videoid} />
       <button type='submit' className='seecomments-button' onClick={() => getEntries()}>See Comments</button>
       <CommentList parentEntries={comments}/>
+      <div className="form-grid">
+      {videoData.map((video) => {
+      return (
+
+        <div>
+          <p>{video.snippet.title}</p>
+        <img src={video.snippet.thumbnails.medium.url} alt="videos"></img>
+        <p>{video.snippet.description}</p>
+        </div>
+
+      );
+      })}
     </div>
-    // <div className="form-grid">
-    //   {videoData.map((video) => {
-    //   return (
-
-    //     <div>
-    //       <p>{video.snippet.title}</p>
-    //     <img src={video.snippet.thumbnails.medium.url} alt="videos"></img>
-    //     <p>{video.snippet.description}</p>
-    //     </div>
-
-    //   );
-    //   })}
-    // </div>
+    </div>
   );
 };
 
 export default HomePage;
-
-// {
-
-//       <CommentList parentEntries={entries} /> */
-// }
 
 // const HomePage = () => {
 //   // The "user" value from this Hook contains the decoded logged in user information (username, first name, id)
